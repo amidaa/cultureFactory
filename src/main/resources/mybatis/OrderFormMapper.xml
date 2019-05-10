@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.OrderFormMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.OrderForm">
+    <result column="orderid" jdbcType="VARCHAR" property="orderid" />
+    <result column="productid" jdbcType="VARCHAR" property="productid" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="buyid" jdbcType="VARCHAR" property="buyid" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.OrderForm">
+    insert into order_form (orderid, productid, userid, 
+      buyid, num, date)
+    values (#{orderid,jdbcType=VARCHAR}, #{productid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{buyid,jdbcType=VARCHAR}, #{num,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.OrderForm">
+    insert into order_form
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="productid != null">
+        productid,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="buyid != null">
+        buyid,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="productid != null">
+        #{productid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="buyid != null">
+        #{buyid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <delete id="delete" parameterType="com.first.group.entity.OrderForm">
+    delete from order_form where orderid = #{orderid}
+  </delete>
+
+
+
+  <select id="findAll" resultType="com.first.group.entity.OrderForm">
+    select orderid,productid,userid,buyid,num,date from order_form
+  </select>
+
+  <select id="findForm" resultType="com.first.group.entity.OrderForm">
+    select orderid,productid,userid,buyid,num,date from order_form
+    <where>
+      <if test="_parameter!=null">
+      orderid=#{id}
+      </if>
+    </where>
+  </select>
+
+  <update id="update" parameterType="com.first.group.entity.OrderForm">
+    update order_form set productid = #{productid},userid = #{userid},date=#{date},
+    num=#{num},userid=#{userid},buyid=#{buyid}
+    where orderid=#{orderid}
+  </update>
+</mapper>

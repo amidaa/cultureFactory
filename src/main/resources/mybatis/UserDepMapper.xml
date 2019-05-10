@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.UserDepMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.UserDep">
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="depid" jdbcType="VARCHAR" property="depid" />
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.UserDep">
+    insert into user_dep (userid, depid)
+    values (#{userid,jdbcType=VARCHAR}, #{depid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.UserDep">
+    insert into user_dep
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="depid != null">
+        depid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="depid != null">
+        #{depid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

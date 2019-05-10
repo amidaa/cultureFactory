@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.DamagedMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.Damaged">
+    <result column="storageid" jdbcType="VARCHAR" property="storageid" />
+    <result column="productid" jdbcType="VARCHAR" property="productid" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.Damaged">
+    insert into damaged (storageid, productid, num, 
+      result)
+    values (#{storageid,jdbcType=VARCHAR}, #{productid,jdbcType=VARCHAR}, #{num,jdbcType=VARCHAR}, 
+      #{result,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.Damaged">
+    insert into damaged
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="storageid != null">
+        storageid,
+      </if>
+      <if test="productid != null">
+        productid,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="storageid != null">
+        #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="productid != null">
+        #{productid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="findOne" resultType="com.first.group.entity.Damaged">
+
+    select storageid,productid,num,result from damaged
+    <where>
+      <if test="storageid!=null">
+        storageid=#{storageid}
+      </if>
+      <if test="productid!=null">
+        AND productid = #{productid}
+      </if>
+    </where>
+
+  </select>
+  <delete id="delete" parameterType="com.first.group.entity.Damaged">
+    delete from damaged where storageid = #{storageid} and productid = #{productid}
+  </delete>
+
+
+
+  <select id="findAll" resultType="com.first.group.entity.Damaged">
+    select storageid,productid,num,result from damaged
+  </select>
+
+  <select id="findByStorage" resultType="com.first.group.entity.Damaged">
+    select storageid,productid,num,result from damaged
+    <where>
+      <if test="storageid!=null">
+        storageid=#{storageid}
+      </if>
+    </where>
+  </select>
+
+  <select id="findByProduct" resultType="com.first.group.entity.Damaged">
+    select storageid,productid,num,result from damaged
+    <where>
+      <if test="productid!=null">
+         productid = #{productid}
+      </if>
+    </where>
+  </select>
+
+  <update id="update" parameterType="com.first.group.entity.Damaged">
+    update damaged set num = #{num}, result= #{result}
+    where storageid=#{storageid} and productid = #{productid};
+  </update>
+</mapper>

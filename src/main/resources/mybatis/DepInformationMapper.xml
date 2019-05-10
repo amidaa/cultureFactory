@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.DepInformationMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.DepInformation">
+    <result column="depid" jdbcType="VARCHAR" property="depid" />
+    <result column="depname" jdbcType="VARCHAR" property="depname" />
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.DepInformation">
+    insert into dep_information (depid, depname)
+    values (#{depid,jdbcType=VARCHAR}, #{depname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.DepInformation">
+    insert into dep_information
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="depid != null">
+        depid,
+      </if>
+      <if test="depname != null">
+        depname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="depid != null">
+        #{depid,jdbcType=VARCHAR},
+      </if>
+      <if test="depname != null">
+        #{depname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <delete id="delete" parameterType="com.first.group.entity.DepInformation">
+    delete from dep_information where depid = #{depid}
+  </delete>
+
+
+
+  <select id="findAll" resultType="com.first.group.entity.DepInformation">
+    select depid,depname from dep_information
+  </select>
+
+  <select id="findOne" resultType="com.first.group.entity.DepInformation">
+    select depid,depname from dep_information
+    <where>
+      <if test="_parameter!=null">
+      depid=#{depid}
+      </if>
+    </where>
+  </select>
+
+  <update id="update" parameterType="com.first.group.entity.DepInformation">
+    update dep_information set depname = #{depname}
+    where depid=#{depid}
+  </update>
+</mapper>

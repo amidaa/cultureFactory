@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.ProductSalesMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.ProductSales">
+    <result column="productid" jdbcType="VARCHAR" property="productid" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    productid, userid, date, num, price
+  </sql>
+  <select id="selectByExample" parameterType="com.first.group.entity.ProductSalesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product_sales
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" parameterType="com.first.group.entity.ProductSales">
+    insert into product_sales (productid, userid, date, 
+      num, price)
+    values (#{productid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, 
+      #{num,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.ProductSales">
+    insert into product_sales
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productid != null">
+        productid,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productid != null">
+        #{productid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <select id="findById" resultType="com.first.group.entity.ProductSales">
+    select id,productid,userid,date,num,price from product_sales
+    <where>
+      <if test="_parameter!=null">
+        id=#{id}
+      </if>
+    </where>
+  </select>
+  <select id="findAll" resultType="com.first.group.entity.ProductSales">
+    select id,productid,userid,date,num,price from product_sales
+  </select>
+
+
+  <update id="update" parameterType="com.first.group.entity.ProductSales">
+    update product_sales set productid = #{productid},userid = #{userid},date=#{date},num=#{num},price=#{price}
+    where id=#{id}
+  </update>
+
+  <delete id="delete" parameterType="com.first.group.entity.ProductSales">
+    delete from product_sales where id = #{id}
+  </delete>
+</mapper>

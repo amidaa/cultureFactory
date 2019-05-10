@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.ExitStorageMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.ExitStorage">
+    <result column="productId" jdbcType="VARCHAR" property="productid" />
+    <result column="storageId" jdbcType="VARCHAR" property="storageid" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.ExitStorage">
+    insert into exit_storage (productId, storageId, date, 
+      num, userid, price)
+    values (#{productid,jdbcType=VARCHAR}, #{storageid,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, 
+      #{num,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.ExitStorage">
+    insert into exit_storage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productid != null">
+        productId,
+      </if>
+      <if test="storageid != null">
+        storageId,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productid != null">
+        #{productid,jdbcType=VARCHAR},
+      </if>
+      <if test="storageid != null">
+        #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="delete" parameterType="com.first.group.entity.ExitStorage">
+    delete from exit_storage where id = #{id}
+  </delete>
+
+
+
+  <select id="findAll" resultType="com.first.group.entity.ExitStorage">
+    select id,productId,storageId,date,num,userid,price from exit_storage
+  </select>
+
+  <select id="findOne" resultType="com.first.group.entity.ExitStorage">
+    select id,productId,storageId,date,num,userid,price from exit_storage
+    <where>
+      <if test="_parameter!=null">
+      id=#{id}
+      </if>
+    </where>
+  </select>
+
+  <update id="update" parameterType="com.first.group.entity.ExitStorage">
+    update exit_storage set productId = #{productId},storageId = #{storageId},date=#{date},
+    num=#{num},userid=#{userid},price=#{price}
+    where id=#{id}
+  </update>
+</mapper>

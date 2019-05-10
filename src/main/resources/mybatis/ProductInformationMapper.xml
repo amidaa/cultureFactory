@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.ProductInformationMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.ProductInformation">
+    <result column="productid" jdbcType="VARCHAR" property="productid" />
+    <result column="productname" jdbcType="VARCHAR" property="productname" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.ProductInformation">
+    insert into product_information (productid, productname, size, 
+      price)
+    values (#{productid,jdbcType=VARCHAR}, #{productname,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.ProductInformation">
+    insert into product_information
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productid != null">
+        productid,
+      </if>
+      <if test="productname != null">
+        productname,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productid != null">
+        #{productid,jdbcType=VARCHAR},
+      </if>
+      <if test="productname != null">
+        #{productname,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteProduct" parameterType="com.first.group.entity.ProductInformation">
+    delete from product_information where id = #{id}
+  </delete>
+
+
+
+  <select id="findAll" resultType="com.first.group.entity.ProductInformation">
+    select id,productid,size,price from product_information
+  </select>
+
+  <select id="findProduct" resultType="com.first.group.entity.ProductInformation">
+    select id,productid,size,price from product_information
+    <where>
+      <if test="_parameter!=null">
+      id=#{id}
+      </if>
+    </where>
+  </select>
+  <select id="findByProductId" resultType="com.first.group.entity.ProductInformation">
+    select id,productid,size,price from product_information
+    <where>
+      <if test="_parameter!=null">
+      productid=#{productId}
+      </if>
+    </where>
+  </select>
+  <select id="findByProductSize" resultType="com.first.group.entity.ProductInformation">
+    select id,productid,size,price from product_information
+    <where>
+      <if test="_parameter!=null">
+      size=#{productsize}
+      </if>
+    </where>
+  </select>
+  <select id="findByProductPrice" resultType="com.first.group.entity.ProductInformation">
+    select id,productid,size,price from product_information
+    <where>
+      <if test="_parameter!=null">
+      price=#{productprice}
+      </if>
+    </where>
+  </select>
+
+
+  <update id="updateProduct" parameterType="com.first.group.entity.ProductInformation">
+    update product_information set productid = #{productid},size = #{size},price=#{price}
+    where id=#{id}
+  </update>
+</mapper>
