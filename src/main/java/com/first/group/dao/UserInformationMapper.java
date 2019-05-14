@@ -13,4 +13,5 @@ public interface UserInformationMapper {
     int updateUser(UserInformation information);//更改用户信息
     List<UserInformation> findAllUser();//查找所有的员工
     UserInformation comparePassword(UserInformation user);//验证输入密码是否正确
+    UserInformation showWages(UserInformation userInformation);//显示员工工资信息
 }

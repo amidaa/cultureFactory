@@ -15,6 +15,9 @@
   <insert id="insertSelective" parameterType="com.first.group.entity.UserWages">
     insert into user_wages
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wageid != null">
+        wageid,
+      </if>
       <if test="userid != null">
         userid,
       </if>
@@ -26,6 +29,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wageid != null">
+      #{wageid,jdbcType=INT},
+      </if>
       <if test="userid != null">
         #{userid,jdbcType=VARCHAR},
       </if>
@@ -37,4 +43,26 @@
       </if>
     </trim>
   </insert>
+
+  <select id="findOne" resultType="com.first.group.entity.UserWages">
+    select wageid,userid,wages,reward,date from user_wages
+    <where>
+      <if test="_parameter!=null">
+        wageid=#{wageid}
+      </if>
+    </where>
+  </select>
+  <select id="findAll" resultType="com.first.group.entity.UserWages">
+    select wageid,userid,wages,reward,date from user_wages
+  </select>
+
+
+  <update id="update" parameterType="com.first.group.entity.UserWages">
+    update user_wages set userid = #{userid},wages = #{wages},reward=#{reward},date=#{date}
+    where wageid=#{wageid}
+  </update>
+
+  <delete id="delete" parameterType="com.first.group.entity.UserWages">
+    delete from user_wages where wageid = #{wageid}
+  </delete>
 </mapper>

@@ -1,11 +1,18 @@
 package com.first.group;
+import com.first.group.authority.Tutorial;
+import com.first.group.util.PassWordToHash;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.apache.tomcat.jdbc.pool.DataSource;
 
 import org.mybatis.spring.SqlSessionFactoryBean;
 
 import org.mybatis.spring.annotation.MapperScan;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +26,13 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 @SpringBootApplication
 @MapperScan("com.first.group.dao")
 public class FactoryApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(FactoryApplication.class, args);
 
@@ -77,5 +87,7 @@ public class FactoryApplication {
         return new DataSourceTransactionManager(dataSource());
 
     }
+
+
 
 }

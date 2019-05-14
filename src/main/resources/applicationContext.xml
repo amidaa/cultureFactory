@@ -1,0 +1,41 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xmlns:context="http://www.springframework.org/schema/context"-->
+<!--       xmlns:aop="http://www.springframework.org/schema/aop"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd-->
+<!--        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd-->
+<!--        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">-->
+
+<!--    <context:component-scan base-package="com.first.group.authority"></context:component-scan>-->
+
+
+<!--    &lt;!&ndash; 配置Realm &ndash;&gt;-->
+<!--    <bean id="MyRealm" class="com.first.group.authority.MyRealm"></bean>-->
+
+<!--    &lt;!&ndash; 配置securityManager &ndash;&gt;-->
+<!--    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">-->
+<!--        <property name="realm" ref="MyRealm" />-->
+<!--    </bean>-->
+<!--    &lt;!&ndash; 生命周期 &ndash;&gt;-->
+<!--    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />-->
+
+<!--    &lt;!&ndash; 启用shiro注解 &ndash;&gt;-->
+<!--    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>-->
+<!--    <bean-->
+<!--            class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">-->
+<!--        <property name="securityManager" ref="securityManager"/>-->
+<!--    </bean>-->
+
+<!--    &lt;!&ndash;-->
+<!--        让securityManager这个bean成为静态单例的bean-->
+<!--        注意：在web应用中，不要配置这个-->
+<!--    &ndash;&gt;-->
+<!--&lt;!&ndash;    <bean&ndash;&gt;-->
+<!--&lt;!&ndash;            class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">&ndash;&gt;-->
+<!--&lt;!&ndash;        <property name="staticMethod"&ndash;&gt;-->
+<!--&lt;!&ndash;                  value="org.apache.shiro.SecurityUtils.setSecurityManager" />&ndash;&gt;-->
+<!--&lt;!&ndash;        <property name="arguments" ref="securityManager" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </bean>&ndash;&gt;-->
+
+<!--</beans>-->

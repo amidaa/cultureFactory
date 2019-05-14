@@ -13,9 +13,9 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Autowired
     AuthorityMapper authorityMapper;
     @Override
-    public Authority findAuthority(String authorityId) {
+    public Authority findAuthority(int id) {
         Authority authority = new Authority();
-        authority.setAuthorityid(authorityId);
+        authority.setId(id);
         return authorityMapper.findOne(authority);
     }
 
@@ -31,9 +31,9 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public int deleteAuthority(String authorityId) {
+    public int deleteAuthority(int id) {
         Authority authority = new Authority();
-        authority.setAuthorityid(authorityId);
+        authority.setId(id);
         return authorityMapper.deleteAuthority(authority);
     }
 

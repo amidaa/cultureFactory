@@ -36,7 +36,7 @@ public class AuthorityController {
     }
 
     @GetMapping("/findById/{authorityId}")
-    public Object findByUserId(@PathVariable String auyhorityId) {
+    public Object findByUserId(@PathVariable int auyhorityId) {
         Authority authority = authorityService.findAuthority(auyhorityId);
         JSONObject jsonObject = new JSONObject();
         if(authority == null) {
@@ -70,7 +70,7 @@ public class AuthorityController {
     }
 
     @DeleteMapping("/delete/{authorityId}")
-    public Object deleteUser(@PathVariable String authorityId){
+    public Object deleteUser(@PathVariable int authorityId){
         int result = authorityService.deleteAuthority(authorityId);
         JSONObject jsonObject = new JSONObject();
         if(result!=0){

@@ -33,12 +33,25 @@
     <result column="photo" jdbcType="VARCHAR" property="photo" />
     <result column="hiredate" jdbcType="TIMESTAMP" property="hiredate" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <association property="userAuthority" autoMapping="true"
-                 javaType="com.first.group.entity.UserAuthority" >
-      <id column="userid" property="userid" />
-      <result column="authorityid" jdbcType="VARCHAR" property="authorityid" />
+    <association property="roleAuthorities" autoMapping="true"
+                 javaType="com.first.group.entity.UserRoles" >
+      <id column="id" property="id" />
     </association>
   </resultMap>
+
+  <resultMap id="UserWagesResultMap" type="com.first.group.entity.UserInformation" autoMapping="true">
+    <id column="userid" property="userid" />    <!-- id 很重要 -->
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <collection property="userWages" autoMapping="true" column="userid"
+                 ofType="com.first.group.entity.UserWages">
+      <id column="wageid" property="wageid" />
+      <result column="wages" jdbcType="VARCHAR" property="wages" />
+      <result column="reward" jdbcType="VARCHAR" property="reward" />
+    </collection>
+  </resultMap>
+
   <insert id="insert" parameterType="com.first.group.entity.UserInformation">
     insert ignore into user_information (userid, username, gender,birthday, address, tel,email, photo, hiredate,
       password)values (#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
@@ -139,27 +152,21 @@
 
 
   <select id="findAllUser" resultType="com.first.group.entity.UserInformation">
-    select userid,username,gender,birthday,address,tel,email,photo from user_information
+    select userid,username,gender,birthday,address,tel,email,photo,hiredate,position from user_information
   </select>
 
 
 
 
-  <select id="findOne" resultMap="UserLoginResultMap">
-    select user_information.userid,user_information.username,
-    user_information.gender,
-    user_information.birthday,
-    user_information.address,
-    user_information.tel,
-    user_information.email,
-    user_information. photo,
-    user_information.hiredate,
-    `user_authority`.userid,
-    `user_authority`.authorityid
-    FROM user_information  LEFT JOIN `user_authority` ON `user_authority`.userid=user_information.userid
+  <select id="findOne" resultType="com.first.group.entity.UserInformation">
+    select userid,username,
+    gender, birthday,
+    address, tel,
+    email, photo,hiredate,position,password
+    FROM user_information
     <where>
       <if test="_parameter!=null">
-        AND	user_information.userid=#{userid}
+        userid=#{userid}
       </if>
     </where>
   </select>
@@ -174,9 +181,28 @@
     user_information.email,
     user_information. photo,
     user_information.hiredate,
-    `user_authority`.userid,
-    `user_authority`.authorityid
-    FROM user_information  LEFT JOIN `user_authority` ON `user_authority`.userid=user_information.userid
+    `user_roles`.id,
+    `user_roles`.roleid
+    FROM user_information  LEFT JOIN `user_roles` ON `user_roles`.userid=user_information.userid
+    <where>
+      <if test="userid!=null">
+        AND	user_information.userid=#{userid}
+      </if>
+      <if test="password!=null">
+        AND	user_information.password=#{password}
+      </if>
+    </where>
+  </select>
+
+  <select id="showWages" resultMap="UserWagesResultMap">
+    select user_information.userid,
+    user_information.username,
+    `user_wages`.userid,
+    `user_wages`.wageid,
+    `user_wages`.wages,
+    `user_wages`.reward,
+    `user_wages`.date
+    FROM user_information  LEFT JOIN `user_wages` ON `user_wages`.userid=user_information.userid
     <where>
       <if test="_parameter!=null">
         AND	user_information.userid=#{userid}

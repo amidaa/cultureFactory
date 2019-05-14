@@ -11,5 +11,7 @@ public interface UserService {
     UserInformation updateUser(UserInformation userInformation);//修改用户个人信息
     List<UserInformation> findAllUser();//查找所有的员工
     UserInformation comparePassword(String userid,String inputPass);//验证输入密码是否正确
+    UserInformation showWages(UserInformation userInformation);//显示员工工资信息
+
 
 }

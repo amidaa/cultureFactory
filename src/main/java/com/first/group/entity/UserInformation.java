@@ -1,35 +1,67 @@
 package com.first.group.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserInformation {
-    private String userid;
+    private String userid;//账号
 
-    private String username;
+    private String username;//用户名
 
-    private String gender;
+    private String gender;//性别
 
-    private String birthday;
+    private String birthday;//生日
 
-    private String address;
+    private String address;//地址
 
-    private String tel;
+    private String tel;//联系电话
 
-    private String email;
+    private String email;//邮箱
 
-    private String photo;
+    private String photo;//照片
 
-    private Date hiredate;
+    private Date hiredate;//入职日期
 
-    private String password;
-    private UserAuthority userAuthority;
+    private String password;//密码
 
-    public UserAuthority getUserAuthority() {
-        return userAuthority;
+    private String position;//职位
+
+    private String workyear;//入职日期
+    private UserRoles roleAuthorities;//用户权限
+    private List<UserWages> userWages;//用户工资
+
+
+    public String getPosition() {
+        return position;
     }
 
-    public void setUserAuthority(UserAuthority userAuthority) {
-        this.userAuthority = userAuthority;
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getWorkyear() {
+        return workyear;
+    }
+
+    public void setWorkyear(String workyear) {
+        this.workyear = workyear;
+    }
+
+    public List<UserWages> getUserWages() {
+        return userWages;
+    }
+
+    public void setUserWages(List<UserWages> userWages) {
+        this.userWages = userWages;
+    }
+
+
+    public UserRoles getRoleAuthorities() {
+        return roleAuthorities;
+    }
+
+    public void setRoleAuthorities(UserRoles roleAuthorities) {
+        this.roleAuthorities = roleAuthorities;
     }
 
     public String getUserid() {

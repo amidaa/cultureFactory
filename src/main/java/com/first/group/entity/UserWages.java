@@ -1,11 +1,30 @@
 package com.first.group.entity;
 
 public class UserWages {
+    private int wageid;
+
+    private String date;
     private String userid;
 
     private String wages;
 
     private String reward;
+
+    public int getWageid() {
+        return wageid;
+    }
+
+    public void setWageid(int wageid) {
+        this.wageid = wageid;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getUserid() {
         return userid;

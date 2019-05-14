@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.RoleAuthorityMapper">
+  <resultMap id="BaseResultMap" type="com.first.group.entity.RoleAuthority">
+    <result column="id" property="id" />
+    <result column="authorityid" jdbcType="VARCHAR" property="authorityid" />
+  </resultMap>
+  <resultMap id="RoleResultMap" type="com.first.group.entity.RoleAuthority" autoMapping="true">
+    <id column="id" property="id" />    <!-- id 很重要 -->
+    <result column="roleid"  property="roleid" />
+    <result column="authorityid" property="authorityid" />
+    <result column="authorname" jdbcType="VARCHAR" property="authorname" />
+    <association property="authority" autoMapping="true" javaType="com.first.group.entity.Authority">
+      <id column="id" property="id" />
+    </association>
+  </resultMap>
+  <insert id="insert" parameterType="com.first.group.entity.RoleAuthority">
+    insert into user_authority (username, authorityid)
+    values (#{username,jdbcType=VARCHAR}, #{authorityid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.first.group.entity.RoleAuthority">
+    insert into user_authority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        username,
+      </if>
+      <if test="authorityid != null">
+        authorityid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityid != null">
+        #{authorityid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <select id="findOne" resultType="com.first.group.entity.RoleAuthority">
+
+      select id,roleid,authorityid,authorname from role_authority
+      <where>
+        <if test="_parameter!=null">
+          roleid=#{roleid}
+        </if>
+      </where>
+
+    </select>
+
+  <select id="findByRole" resultMap="RoleResultMap">
+
+    select role_authority.id,
+    role_authority.roleid,
+    role_authority.authorname,
+    role_authority.authorityid,
+    `authority`.id,
+    `authority`.parentId,
+    `authority`.name,
+    `authority`.url,
+    `authority`.parentName,
+    `authority`.icon,
+    `authority`.type
+    FROM role_authority  LEFT JOIN `authority` ON `authority`.id=role_authority.authorityid
+    <where>
+      <if test="_parameter!=null">
+        AND	role_authority.roleid=#{roleid}
+      </if>
+    </where>
+  </select>
+</mapper>

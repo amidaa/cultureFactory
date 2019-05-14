@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin//跨域请求
 @RestController
 @RequestMapping("/ProductStorageApi")
+
 public class ProductStorageController {
 
     private ProductStorageService productStorageService;

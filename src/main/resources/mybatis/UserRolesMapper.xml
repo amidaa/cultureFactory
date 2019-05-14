@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.first.group.dao.UserRolesMapper">
+    <resultMap id="BaseResultMap" type="com.first.group.entity.UserRoles">
+        <result column="userid" jdbcType="VARCHAR" property="userid" />
+        <result column="wages" jdbcType="VARCHAR" property="wages" />
+        <result column="reward" jdbcType="VARCHAR" property="reward" />
+    </resultMap>
+    <insert id="insert" parameterType="com.first.group.entity.UserWages">
+        insert into user_wages (userid, wages, reward
+        )
+        values (#{userid,jdbcType=VARCHAR}, #{wages,jdbcType=VARCHAR}, #{reward,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.first.group.entity.UserWages">
+        insert into user_wages
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wageid != null">
+                wageid,
+            </if>
+            <if test="userid != null">
+                userid,
+            </if>
+            <if test="wages != null">
+                wages,
+            </if>
+            <if test="reward != null">
+                reward,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wageid != null">
+                #{wageid,jdbcType=INT},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=VARCHAR},
+            </if>
+            <if test="wages != null">
+                #{wages,jdbcType=VARCHAR},
+            </if>
+            <if test="reward != null">
+                #{reward,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findOne" resultType="com.first.group.entity.UserRoles">
+        select roleid,name
+        <where>
+            <if test="_parameter!=null">
+                userid=#{userid}
+            </if>
+        </where>
+    </select>
+
+</mapper>
