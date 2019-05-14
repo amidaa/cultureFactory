@@ -45,7 +45,7 @@
     </insert>
 
     <select id="findOne" resultType="com.first.group.entity.UserRoles">
-        select roleid,name
+        select roleid,name,nameZh from user_roles
         <where>
             <if test="_parameter!=null">
                 userid=#{userid}

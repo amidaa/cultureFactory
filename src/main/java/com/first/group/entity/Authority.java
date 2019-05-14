@@ -1,5 +1,7 @@
 package com.first.group.entity;
 
+import java.util.List;
+
 public class Authority {
 
     private int id;
@@ -18,6 +20,16 @@ public class Authority {
 
 
     private int type;
+
+    private List<Authority> children;
+
+    public List<Authority> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Authority> children) {
+        this.children = children;
+    }
 
     public Authority() {
     }

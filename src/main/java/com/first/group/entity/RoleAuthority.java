@@ -8,6 +8,7 @@ public class RoleAuthority {
     private int roleid;
 
     private String authorityid;
+
     private Authority authority;
 
     public Authority getAuthority() {

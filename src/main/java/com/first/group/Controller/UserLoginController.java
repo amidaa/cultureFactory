@@ -1,8 +1,5 @@
 package com.first.group.Controller;
-import com.first.group.entity.Authority;
-import com.first.group.entity.RoleAuthority;
-import com.first.group.entity.UserInformation;
-import com.first.group.entity.UserRoles;
+import com.first.group.entity.*;
 import com.first.group.service.RoleAuthorityService;
 import com.first.group.service.UserService;
 import com.first.group.util.PassWordToHash;
@@ -44,61 +41,93 @@ public class UserLoginController {
         logger.info("登录info");
         logger.warn("登录warn");
 
-//        Subject subject = SecurityUtils.getSubject();
+        Subject subject = SecurityUtils.getSubject();
+        JSONObject jsonObject = new JSONObject();
+        if (!subject.isAuthenticated()){
+            UsernamePasswordToken token = new UsernamePasswordToken(userInformation.getUserid().trim(), userInformation.getPassword().trim(), false);
+            try {
+                token.setRememberMe(true);//true代表记住我，默认时false
+                subject.login(token);//登录（调用realm认证）
+                logger.info("User [" + subject.getPrincipal() + "] logged in successfully.");
+                // 查看用户是否有指定的角色
+                if ( subject.hasRole( "ROLE_admin" ) ) {
+                    logger.info("Look is in your role" );
+                } else {
+                    logger.info( "....." );
+                }
+
+                // 查看用户是否有某个权限
+                if ( subject.isPermitted( "库房管理" ) ) {
+                    logger.info("You can look.  库房管理.");
+                } else {
+                    logger.info("Sorry, you can't look.");
+                }
+//                subject.logout();
+
+                UserInformation user = userService.comparePassword(userInformation.getUserid(),userInformation.getPassword());
+                UserRoles userRoles = user.getRoleAuthorities();
+                List<RoleAuthority> authoritys = roleAuthorityService.findByRole(userRoles.getRoleid());
+                List<Authority> menu = new ArrayList<>();
+                for(RoleAuthority authority:authoritys){
+                    Authority au = authority.getAuthority();
+                    menu.add(au);
+                }
+
+                if(authoritys!=null){
+                    jsonObject.put("menu",menu);
+                }
+                if(user==null) {
+                    logger.error("登录error");
+                    jsonObject.put("message", "用户不存在");
+                }else{
+                    jsonObject.put("message", "用户存在");
+                    jsonObject.put("user",user);
+                    logger.info("登录info");
+                }
+
+                return jsonObject;
+            }catch (AuthenticationException e){
+                jsonObject.put("error",e.getMessage());
+                e.printStackTrace();
+            }
+        }else{
+            logger.error("登录失败");
+            jsonObject.put("error","登录失败");
+        }
+
+//        UserInformation user = userService.comparePassword(userInformation.getUserid(),userInformation.getPassword());
+//        UserRoles userRoles = user.getRoleAuthorities();
+//        List<RoleAuthority> authoritys = roleAuthorityService.findByRole(userRoles.getRoleid());
+//        List<Authority> menu = new ArrayList<>();
+//        List<Authority> children = new ArrayList<>();
+//        for(RoleAuthority authority:authoritys){
+//            Authority au = authority.getAuthority();
+//            logger.info(au.getName());
 //
-//        if (!subject.isAuthenticated()){
-//            UsernamePasswordToken token = new UsernamePasswordToken(userInformation.getUserid().trim(), userInformation.getPassword().trim(), false);
-//            try {
-//                token.setRememberMe(true);//true代表记住我，默认时false
-//                subject.login(token);//登录（调用realm认证）
-//                logger.info("User [" + subject.getPrincipal() + "] logged in successfully.");
-//                UserInformation user = userService.comparePassword(userInformation.getUserid(),userInformation.getPassword());
-//                UserRoles userRoles = user.getRoleAuthorities();
-//                List<RoleAuthority> authoritys = roleAuthorityService.findByRole(userRoles.getRoleid());
-//                List<Authority> menu = new ArrayList<>();
-//                for(RoleAuthority authority:authoritys){
-//                    Authority au = authority.getAuthority();
-//                    menu.add(au);
-//                }
-//                JSONObject jsonObject = new JSONObject();
-//                if(authoritys!=null){
-//                    jsonObject.put("menu",menu);
-//                }
-//                if(user==null) {
-//                    logger.error("登录error");
-//                    jsonObject.put("message", "用户不存在");
-//                }else{
-//                    jsonObject.put("message", "用户存在");
-//                    jsonObject.put("user",user);
-//                    logger.info("登录info");
-//                }
+//            if(au.getParentId()==0){
+//                menu.add(au);
+//            }else{
+//               children.add(au);
+//            }
 //
-//                return jsonObject;
-//            }catch (AuthenticationException e){
-//                e.printStackTrace();
+//        }
+//        for(Authority a:menu){
+//            if(a.getId()==1){
+//                a.setChildren(children);
 //            }
 //        }
-
-        UserInformation user = userService.comparePassword(userInformation.getUserid(),userInformation.getPassword());
-        UserRoles userRoles = user.getRoleAuthorities();
-        List<RoleAuthority> authoritys = roleAuthorityService.findByRole(userRoles.getRoleid());
-        List<Authority> menu = new ArrayList<>();
-        for(RoleAuthority authority:authoritys){
-            Authority au = authority.getAuthority();
-            menu.add(au);
-        }
-        JSONObject jsonObject = new JSONObject();
-        if(authoritys!=null){
-            jsonObject.put("menu",menu);
-        }
-        if(user==null) {
-            logger.error("登录error");
-            jsonObject.put("message", "用户不存在");
-        }else{
-            jsonObject.put("message", "用户存在");
-            jsonObject.put("user",user);
-            logger.info("登录info");
-        }
+//        JSONObject jsonObject = new JSONObject();
+//        if(authoritys!=null){
+//            jsonObject.put("menu",menu);
+//        }
+//        if(user==null) {
+//            logger.error("登录error");
+//            jsonObject.put("message", "用户不存在");
+//        }else{
+//            jsonObject.put("message", "用户存在");
+//            jsonObject.put("user",user);
+//            logger.info("登录info");
+//        }
 
        return jsonObject;
     }
@@ -119,25 +148,23 @@ public class UserLoginController {
         return jsonObject;
     }
 
-    @PostMapping("/logout")
-    public Object logout(@RequestBody UserInformation userInformation) {
-        PassWordToHash passWordToHash = new PassWordToHash();
-        userInformation.setPassword(passWordToHash.passwordToHash(userInformation.getPassword()));
-        UserInformation user = userService.findUser(userInformation);
-        JSONObject jsonObject = new JSONObject();
-        if(user==null) {
-            jsonObject.put("message", "0");
-        }else{
-            jsonObject.put("message", "1");
+    @GetMapping("/logout")
+    public Object logout() {
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            subject.logout();
         }
-
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", "退出成功！");
         return jsonObject;
     }
 
-    @GetMapping("/findById/{userId}")
-    public Object findByUserId(@PathVariable String userId) {
+
+    @PostMapping("/findById")
+    public Object findByUserId(@RequestBody FindUser findUser) {
         UserInformation userInformation = new UserInformation();
-        userInformation.setUserid(userId);
+        String userid = findUser.getUserid();
+        userInformation.setUserid(userid);
         UserInformation user = userService.findUser(userInformation);
         JSONObject jsonObject = new JSONObject();
         if(user == null) {

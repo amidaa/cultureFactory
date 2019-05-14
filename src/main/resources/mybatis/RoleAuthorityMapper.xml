@@ -50,8 +50,7 @@
 
   <select id="findByRole" resultMap="RoleResultMap">
 
-    select role_authority.id,
-    role_authority.roleid,
+    select role_authority.roleid,
     role_authority.authorname,
     role_authority.authorityid,
     `authority`.id,
